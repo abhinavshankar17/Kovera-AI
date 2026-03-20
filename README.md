@@ -77,7 +77,7 @@ Frontend Dashboard (EJS / Web Interface)
 
 ### Frontend
 
-* EJS / HTML / CSS
+* React
 * Responsive UI
 
 ### Backend
