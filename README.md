@@ -1,5 +1,5 @@
-GigShield AI
-AI-Powered Parametric Insurance for Delivery Workers
+##GigShield AI
+##AI-Powered Parametric Insurance for Delivery Workers
 ## Problem Statement
 
 Delivery partners working with platforms such as Swiggy and Zomato are highly dependent on external conditions for their daily income. Factors like heavy rainfall, extreme heat, pollution, and traffic disruptions significantly reduce their working hours, leading to a 20–30% loss in earnings.
