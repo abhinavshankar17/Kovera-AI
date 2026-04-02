@@ -22,8 +22,8 @@ const ProtectedRoute = ({ children, roleRequired }) => {
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/" element={<Navigate to="/dashboard" />} />
+      <Route path="/auth" element={<Navigate to="/dashboard" />} />
       <Route path="/onboarding" element={
         <ProtectedRoute roleRequired="worker">
           <OnboardingPage />

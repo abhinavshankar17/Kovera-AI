@@ -1,15 +1,35 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import CommunityFeed from '../components/CommunityFeed';
-import { FiTrendingUp, FiShield, FiAlertTriangle, FiLogOut } from 'react-icons/fi';
+import { FiTrendingUp, FiShield, FiAlertTriangle, FiLogOut, FiMapPin, FiClock } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import WeatherAlertBanner from '../components/WeatherAlertBanner';
+import { getBrowserLocation, getCityFromCoords } from '../services/locationService';
 
+
+import PayoutHistoryWidget from '../components/PayoutHistoryWidget';
+import PolicyStoreWidget from '../components/PolicyStoreWidget';
 
 const WorkerDashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [protectionScore, setProtectionScore] = useState(82); // Simulated AI score based on policy max / avg income
+  const [liveLocation, setLiveLocation] = useState('Fetching...');
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        const coords = await getBrowserLocation();
+        const city = await getCityFromCoords(coords.lat, coords.lng);
+        setLiveLocation(city || 'Unknown Zone');
+      } catch (error) {
+        setLiveLocation(user?.primaryZone || 'Location access denied');
+      }
+    };
+    if (user) {
+      fetchLocation();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (user && user.activePolicy && user.avgWeeklyEarnings) {
@@ -37,6 +57,35 @@ const WorkerDashboard = () => {
 
       <div className="grid-auto" style={{ marginBottom: '24px' }}>
         
+        {/* Profile & Live Status Card */}
+        <div className="glass-panel">
+          <h3 className="text-subtle" style={{ marginBottom: '16px' }}>Status & Hours</h3>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', background: 'rgba(0, 210, 255, 0.1)', borderRadius: '12px', color: 'var(--accent-blue)' }}>
+                <FiMapPin size={24} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <p className="text-subtle">Live Operating Zone</p>
+                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', lineHeight: '1.2' }}>{liveLocation}</p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', borderTop: '1px solid var(--border-light)', paddingTop: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', background: 'rgba(122, 40, 255, 0.1)', borderRadius: '12px', color: 'var(--accent-purple)' }}>
+                <FiClock size={24} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <p className="text-subtle">Working Hours ({user.preferredWorkingHours?.shift || 'Flexible'})</p>
+                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', lineHeight: '1.2' }}>
+                  {user.preferredWorkingHours?.start} - {user.preferredWorkingHours?.end}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Active Policy Card */}
         <div className="glass-panel" style={{ position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '150px', height: '150px', background: 'var(--accent-gradient)', filter: 'blur(50px)', opacity: 0.3, borderRadius: '50%' }}></div>
@@ -79,6 +128,9 @@ const WorkerDashboard = () => {
 
       {/* Dynamic Weather Alerts based on Live Location Data */}
       <WeatherAlertBanner defaultZone={user.primaryZone} />
+
+      <PolicyStoreWidget />
+      <PayoutHistoryWidget />
 
     </div>
   );

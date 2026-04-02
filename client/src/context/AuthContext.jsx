@@ -4,15 +4,30 @@ import axios from 'axios';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({
+    _id: "mock_worker_1",
+    name: "Alex Rider",
+    email: "alex@gigshield.com",
+    role: "worker",
+    walletBalance: 120,
+    primaryZone: "T. Nagar",
+    preferredWorkingHours: { start: "10:00 AM", end: "8:00 PM", shift: "Flexible" },
+    avgWeeklyEarnings: 2500,
+    activePolicy: {
+      name: "Heavy Rain Protection",
+      weeklyPremium: 50,
+      maxPayout: 1500
+    },
+    payoutHistory: [
+      { id: 1, date: "2026-03-28", trigger: "Heavy Rain Level 3", amount: 450, status: "Credited" },
+      { id: 2, date: "2026-03-15", trigger: "Heatwave Alert", amount: 200, status: "Credited" },
+      { id: 3, date: "2026-02-10", trigger: "Waterlogging Delay", amount: 300, status: "Credited" }
+    ]
+  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const userInfo = localStorage.getItem('gigshield_user');
-    if (userInfo) {
-      setUser(JSON.parse(userInfo));
-    }
-    setLoading(false);
+    // Hardcoded user, no loading needed.
   }, []);
 
   const login = async (email, password) => {
