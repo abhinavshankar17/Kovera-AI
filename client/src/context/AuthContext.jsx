@@ -49,28 +49,41 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, role) => {
     try {
-      let finalUser;
-      if (role === 'admin') {
-         finalUser = { _id: "admin_master", name: "System Admin", email, role: "admin", token: "mock_jwt_token" };
+      const { data } = await axios.post('/api/auth/login', { email, password });
+      
+      // Adapt backend model to frontend UI requirements
+      if (data.activePolicy) {
+        data.activePolicies = [{
+          id: data.activePolicy._id,
+          name: data.activePolicy.name,
+          weeklyPremium: data.activePolicy.weeklyPremium,
+          maxPayout: data.activePolicy.maxPayout,
+          coveredDisruptions: data.activePolicy.coveredDisruptions,
+          lockedUntil: Date.now() + 86400000 // mock lock for now based on login
+        }];
       } else {
-         finalUser = { ...mockWorkerData, email };
+        data.activePolicies = [];
       }
-      setUser(finalUser);
-      localStorage.setItem('gigshield_user', JSON.stringify(finalUser));
+
+      setUser(data);
+      localStorage.setItem('gigshield_user', JSON.stringify(data));
       return { success: true };
     } catch (error) {
-      return { success: false, message: 'Mock Login failed' };
+      return { success: false, message: error.response?.data?.message || 'Login failed' };
     }
   };
 
   const register = async (userData) => {
     try {
-      const finalUser = { ...mockWorkerData, name: userData.name, email: userData.email, role: 'worker' };
-      setUser(finalUser);
-      localStorage.setItem('gigshield_user', JSON.stringify(finalUser));
+      const { data } = await axios.post('/api/auth/register', userData);
+      
+      data.activePolicies = []; // new signups have no active policies
+
+      setUser(data);
+      localStorage.setItem('gigshield_user', JSON.stringify(data));
       return { success: true };
     } catch (error) {
-      return { success: false, message: 'Registration failed' };
+      return { success: false, message: error.response?.data?.message || 'Registration failed' };
     }
   };
 
@@ -111,8 +124,32 @@ export const AuthProvider = ({ children }) => {
      return { success: true };
   };
 
+  const updateUserPolicy = (buyResponseData) => {
+    // Backend returns single activePolicy object, frontend expects array activePolicies
+    const { activePolicy, expiry } = buyResponseData;
+    
+    // Map backend policy model to frontend requirements
+    const mappedPolicy = {
+      id: activePolicy._id,
+      name: activePolicy.name,
+      weeklyPremium: activePolicy.weeklyPremium,
+      maxPayout: activePolicy.maxPayout,
+      coveredDisruptions: activePolicy.coveredDisruptions,
+      subscribedAt: Date.now(),
+      lockedUntil: new Date(expiry).getTime()
+    };
+
+    const updatedUser = { 
+      ...user, 
+      activePolicies: [mappedPolicy] // Replaces old policies with the new one
+    };
+    
+    setUser(updatedUser);
+    localStorage.setItem('gigshield_user', JSON.stringify(updatedUser));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, subscribePolicy, unsubscribePolicy }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, subscribePolicy, unsubscribePolicy, updateUserPolicy }}>
       {children}
     </AuthContext.Provider>
   );

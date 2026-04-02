@@ -58,4 +58,15 @@ const getDashboardMetrics = async (req, res) => {
   }
 };
 
-module.exports = { getDashboardMetrics };
+const getRiders = async (req, res) => {
+  try {
+    const riders = await User.find({ role: 'worker' })
+      .select('-password')
+      .populate('activePolicy');
+    res.json(riders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { getDashboardMetrics, getRiders };

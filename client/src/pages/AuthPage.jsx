@@ -15,8 +15,7 @@ const AuthPage = () => {
   // Form State
   const [formData, setFormData] = useState({
     name: '', email: '', password: '', 
-    city: 'Chennai', deliveryPlatform: 'Swiggy', primaryZone: 'T. Nagar',
-    avgWeeklyEarnings: 3000, startHour: '10:00', endHour: '20:00'
+    city: 'Chennai', deliveryPlatform: 'Swiggy', primaryZone: 'T. Nagar'
   });
 
   useEffect(() => {
@@ -37,7 +36,9 @@ const AuthPage = () => {
       : await register({
           ...formData, 
           role,
-          preferredWorkingHours: { start: formData.startHour, end: formData.endHour, shift: 'Custom' }
+          // Defaults for new riders, can be updated later from proper profile dashboard
+          preferredWorkingHours: { start: '09:00', end: '18:00', shift: 'Flexible' },
+          avgWeeklyEarnings: 3000
         });
         
     if (!res.success) setErrorMsg(res.message);
@@ -96,30 +97,13 @@ const AuthPage = () => {
                 </select>
               </div>
               
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <div className="form-group" style={{ flex: 1 }}>
-                  <label className="form-label">Primary Zone</label>
-                  <select name="primaryZone" className="form-select" onChange={handleChange}>
-                    <option>T. Nagar</option>
-                    <option>Velachery</option>
-                    <option>Adyar</option>
-                  </select>
-                </div>
-                <div className="form-group" style={{ flex: 1 }}>
-                  <label className="form-label">Avg Weekly (₹)</label>
-                  <input type="number" name="avgWeeklyEarnings" className="form-input" value={formData.avgWeeklyEarnings} onChange={handleChange} />
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <div className="form-group" style={{ flex: 1 }}>
-                  <label className="form-label">Start Time</label>
-                  <input type="time" name="startHour" className="form-input" value={formData.startHour} onChange={handleChange} />
-                </div>
-                <div className="form-group" style={{ flex: 1 }}>
-                  <label className="form-label">End Time</label>
-                  <input type="time" name="endHour" className="form-input" value={formData.endHour} onChange={handleChange} />
-                </div>
+              <div className="form-group">
+                <label className="form-label">Primary Zone</label>
+                <select name="primaryZone" className="form-select" onChange={handleChange}>
+                  <option>T. Nagar</option>
+                  <option>Velachery</option>
+                  <option>Adyar</option>
+                </select>
               </div>
             </>
           )}

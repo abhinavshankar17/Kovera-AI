@@ -10,6 +10,7 @@ const HomePage = () => {
   const { user } = useContext(AuthContext);
   const [protectionScore, setProtectionScore] = useState(82);
   const [liveLocation, setLiveLocation] = useState('Fetching...');
+  const [isOnline, setIsOnline] = useState(false);
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -71,33 +72,52 @@ const HomePage = () => {
 
       <div className="grid-auto" style={{ marginBottom: '24px' }}>
         
-        {/* Profile & Live Status Card */}
-        <div className="glass-panel">
-          <h3 className="text-subtle" style={{ marginBottom: '16px' }}>Status & Hours</h3>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', background: 'rgba(0, 210, 255, 0.1)', borderRadius: '12px', color: 'var(--accent-blue)' }}>
-                <FiMapPin size={24} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <p className="text-subtle">Live Operating Zone</p>
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', lineHeight: '1.2' }}>{liveLocation}</p>
-              </div>
+        {/* Gig Worker Actions Card */}
+        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <h3 style={{ margin: 0 }}>Shift Status</h3>
+              <p className="text-subtle" style={{ fontSize: '0.9rem' }}>{liveLocation}</p>
             </div>
+            <button 
+              onClick={() => setIsOnline(!isOnline)}
+              style={{ 
+                background: isOnline ? 'var(--status-success)' : 'rgba(255, 255, 255, 0.1)',
+                color: isOnline ? '#000' : 'white',
+                border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 'bold', cursor: 'pointer',
+                transition: 'all 0.3s ease', boxShadow: isOnline ? '0 0 15px rgba(0,230,118,0.4)' : 'none'
+              }}
+            >
+              {isOnline ? 'Go Offline' : 'Go Online'}
+            </button>
+          </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', borderTop: '1px solid var(--border-light)', paddingTop: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', background: 'rgba(122, 40, 255, 0.1)', borderRadius: '12px', color: 'var(--accent-purple)' }}>
-                <FiClock size={24} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <p className="text-subtle">Working Hours ({user.preferredWorkingHours?.shift || 'Flexible'})</p>
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', lineHeight: '1.2' }}>
-                  {user.preferredWorkingHours?.start} - {user.preferredWorkingHours?.end}
-                </p>
-              </div>
+          {/* Earnings Target Progress */}
+          <div style={{ background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span className="text-subtle">Weekly Target</span>
+              <span style={{ fontWeight: 'bold' }}>₹1,200 / ₹{user.avgWeeklyEarnings || '3,000'}</span>
+            </div>
+            <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+              <div style={{ width: '40%', height: '100%', background: 'var(--accent-gradient)' }}></div>
             </div>
           </div>
+
+          {/* Shift Schedule */}
+          <div>
+            <h4 style={{ marginBottom: '12px', fontSize: '1rem', color: 'var(--text-muted)' }}>Today's Shifts</h4>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(122, 40, 255, 0.1)', border: '1px solid rgba(122, 40, 255, 0.3)', padding: '12px', borderRadius: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <FiClock color="var(--accent-purple)" size={20} />
+                <div>
+                  <div style={{ fontWeight: 'bold' }}>{user.preferredWorkingHours?.start || '10:00 AM'} - {user.preferredWorkingHours?.end || '8:00 PM'}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{user.primaryZone || 'Assigned Zone'}</div>
+                </div>
+              </div>
+              <div className="badge badge-success" style={{ padding: '4px 8px', fontSize: '0.8rem' }}>Booked</div>
+            </div>
+          </div>
+
         </div>
 
         {/* Total Coverage Summary */}

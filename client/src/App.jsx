@@ -29,6 +29,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/auth" />} />
+      <Route path="/clear" element={<>{localStorage.clear()}<Navigate to="/auth" /></>} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/onboarding" element={
         <ProtectedRoute roleRequired="worker">

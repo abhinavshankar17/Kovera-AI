@@ -1,45 +1,71 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { FiUsers, FiCreditCard, FiAlertTriangle, FiLogOut, FiShield, FiActivity } from 'react-icons/fi';
+import { FiUsers, FiCreditCard, FiAlertTriangle, FiLogOut, FiShield, FiActivity, FiMapPin, FiPlayCircle } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-
-const mockRiderDatabase = [
-  { id: 'R001', name: 'Ritesh Kumar', zone: 'Chennai (T. Nagar)', activePolicies: 2, income: 145000, payouts: 950, fraudScore: 12, fraudReason: null },
-  { id: 'R002', name: 'Priya Sharma', zone: 'Mumbai (Andheri West)', activePolicies: 1, income: 82000, payouts: 0, fraudScore: 5, fraudReason: null },
-  { id: 'R003', name: 'Rahul Singh', zone: 'Bangalore (Koramangala)', activePolicies: 4, income: 110000, payouts: 8500, fraudScore: 92, fraudReason: 'Excessive Claims & Location Mismatch' },
-  { id: 'R004', name: 'Anita Desai', zone: 'Delhi (Connaught Place)', activePolicies: 0, income: 45000, payouts: 0, fraudScore: 1, fraudReason: null },
-  { id: 'R005', name: 'Vikram Reddy', zone: 'Hyderabad (Banjara Hills)', activePolicies: 3, income: 210000, payouts: 1200, fraudScore: 45, fraudReason: 'Suspicious Activity Detected' }
-];
+import axios from 'axios';
 
 const AdminDashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [metrics, setMetrics] = useState(null);
+  const [riders, setRiders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedRider, setSelectedRider] = useState(null);
+
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      try {
+        const config = { headers: { Authorization: `Bearer ${user.token}` } };
+        const [metricsRes, ridersRes] = await Promise.all([
+          axios.get('/api/admin/metrics', config),
+          axios.get('/api/admin/riders', config)
+        ]);
+        setMetrics(metricsRes.data);
+        setRiders(ridersRes.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Admin fetch error", error);
+        setLoading(false);
+      }
+    };
+    if (user?.token) {
+      fetchAdminData();
+    }
+  }, [user]);
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
-  // Aggregated Stats
-  const totalRiders = mockRiderDatabase.length + 1445; // Simulated base
-  const totalPolicies = mockRiderDatabase.reduce((acc, r) => acc + r.activePolicies, 810);
-  const totalPayouts = mockRiderDatabase.reduce((acc, r) => acc + r.payouts, 44050);
+  const handleSimulateDisruption = () => {
+    alert("Simulation: Live trigger for Heatwave in T. Nagar dispatched! Systems are now evaluating payouts.");
+  };
 
-  // Note: For demo purposes, we're not rigidly blocking render if role !== admin right here, 
-  // relying on App.jsx ProtectedRoute instead, but keeping a fallback just in case.
-  if (!user) return <div className="container" style={{paddingTop: '60px'}}>Loading Admin...</div>;
+  if (loading) return <div className="container" style={{paddingTop: '60px'}}>Loading Admin Dashboard...</div>;
+
+  const totalRiders = metrics?.totalWorkers || 0;
+  const totalPolicies = metrics?.totalPolicies || 0;
+  const totalPayouts = metrics?.financialViability?.totalPayoutsIssued || 0;
 
   return (
     <div className="animate-fade-in" style={{ padding: '40px', background: 'var(--bg-dark)', minHeight: '100vh', color: 'var(--text-main)' }}>
       
+      {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
         <div>
            <h1 className="text-gradient" style={{ margin: 0 }}>Fleet Management Hub</h1>
            <p className="text-subtle" style={{ margin: '8px 0 0 0' }}>GigShield AI Central Command</p>
         </div>
-        <button className="btn btn-outline" onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-           <FiLogOut /> Admin Logout
-        </button>
+        <div style={{ display: 'flex', gap: '16px' }}>
+          <button className="btn btn-premium" onClick={handleSimulateDisruption} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+             <FiPlayCircle /> Simulate Weather Trigger
+          </button>
+          <button className="btn btn-outline" onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+             <FiLogOut /> Admin Logout
+          </button>
+        </div>
       </div>
 
       {/* Global Aggregation Stats */}
@@ -89,25 +115,35 @@ const AdminDashboard = () => {
               <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--border-light)' }}>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)' }}>Rider ID & Name</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)' }}>Operating Zone</th>
-                <th style={{ padding: '16px 24px', color: 'var(--text-muted)' }}>Policies</th>
-                <th style={{ padding: '16px 24px', color: 'var(--text-muted)' }}>Lifetime Income</th>
-                <th style={{ padding: '16px 24px', color: 'var(--text-muted)' }}>Total Claims Paid</th>
+                <th style={{ padding: '16px 24px', color: 'var(--text-muted)' }}>Policy Standing</th>
+                <th style={{ padding: '16px 24px', color: 'var(--text-muted)' }}>Map Trace</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)' }}>Fraud Score & Status</th>
               </tr>
             </thead>
             <tbody>
-              {mockRiderDatabase.map((rider) => (
-                <tr key={rider.id} style={{ borderBottom: '1px solid var(--border-light)', transition: 'background 0.2s', ':hover': { background: 'rgba(255,255,255,0.05)' }}}>
+              {riders.map((rider) => (
+                <tr key={rider._id} style={{ borderBottom: '1px solid var(--border-light)', transition: 'background 0.2s', ':hover': { background: 'rgba(255,255,255,0.05)' }}}>
                   <td style={{ padding: '20px 24px' }}>
                     <div style={{ fontWeight: 'bold' }}>{rider.name}</div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{rider.id}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{rider._id}</div>
                   </td>
-                  <td style={{ padding: '20px 24px', color: 'var(--text-main)' }}>{rider.zone}</td>
+                  <td style={{ padding: '20px 24px', color: 'var(--text-main)' }}>{rider.primaryZone || 'Unassigned'}</td>
                   <td style={{ padding: '20px 24px' }}>
-                    <span className="badge badge-info">{rider.activePolicies} Active</span>
+                    {rider.activePolicy ? (
+                       <span className="badge badge-success">Active</span>
+                    ) : (
+                       <span className="badge" style={{background: 'rgba(255,255,255,0.1)'}}>No Policy</span>
+                    )}
                   </td>
-                  <td style={{ padding: '20px 24px', fontWeight: 'bold' }}>₹{rider.income.toLocaleString('en-IN')}</td>
-                  <td style={{ padding: '20px 24px', fontWeight: 'bold', color: 'var(--status-success)' }}>₹{rider.payouts.toLocaleString('en-IN')}</td>
+                  <td style={{ padding: '20px 24px' }}>
+                    <button 
+                      onClick={() => setSelectedRider(rider)} 
+                      className="btn btn-outline" 
+                      style={{ padding: '6px 12px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <FiMapPin /> Trace Location
+                    </button>
+                  </td>
                   <td style={{ padding: '20px 24px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                        <div style={{ 
@@ -116,22 +152,57 @@ const AdminDashboard = () => {
                           color: rider.fraudScore > 80 ? 'var(--status-error)' : rider.fraudScore > 40 ? 'var(--status-warning)' : 'var(--status-success)',
                           border: `2px solid ${rider.fraudScore > 80 ? 'var(--status-error)' : rider.fraudScore > 40 ? 'var(--status-warning)' : 'var(--status-success)'}`
                        }}>
-                         {rider.fraudScore}
+                         {rider.fraudScore || 12}
                        </div>
-                       {rider.fraudReason && (
+                       {rider.fraudStatus && rider.fraudStatus !== 'Low Risk' && (
                           <div style={{ display: 'flex', flexDirection: 'column' }}>
                              <span style={{ fontSize: '0.8rem', color: 'var(--status-error)' }}><FiAlertTriangle /> Suspicious</span>
-                             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{rider.fraudReason}</span>
+                             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{rider.fraudStatus}</span>
                           </div>
                        )}
                     </div>
                   </td>
                 </tr>
               ))}
+              {riders.length === 0 && (
+                <tr><td colSpan="5" style={{padding: '24px', textAlign: 'center', color: 'var(--text-muted)'}}>No riders registered yet.</td></tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* Embedded Street Map Location Tracing Modal */}
+      {selectedRider && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(5px)' }}>
+          <div className="glass-panel" style={{ width: '90%', maxWidth: '800px', padding: '30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+               <div>
+                  <h2 style={{ margin: 0, color: 'white' }}>Live Location Trace: {selectedRider.name}</h2>
+                  <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>Operating Zone: {selectedRider.primaryZone || 'Unknown'}</p>
+               </div>
+               <button onClick={() => setSelectedRider(null)} className="btn btn-outline" style={{ padding: '8px 16px' }}>Close Tracking</button>
+            </div>
+            
+            <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+              <div className="badge badge-info">ID: {selectedRider._id}</div>
+              <div className="badge badge-success" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FiActivity /> Live Syncing Active</div>
+            </div>
+            
+            <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-light)' }}>
+              {/* Standard Street Map via OpenStreetMap based on typical Chennai coords for demonstration */}
+              <iframe 
+                width="100%" 
+                height="450" 
+                src="https://www.openstreetmap.org/export/embed.html?bbox=80.18%2C12.98%2C80.26%2C13.06&amp;layer=mapnik&amp;marker=13.04%2C80.23" 
+                style={{ border: 0 }}
+                title="Rider Standard Location Map"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
