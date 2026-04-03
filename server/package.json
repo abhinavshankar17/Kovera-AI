@@ -1,7 +1,7 @@
 {
-  "name": "gigshield-ai-server",
+  "name": "kovera-ai-server",
   "version": "1.0.0",
-  "description": "GigShield AI Backend",
+  "description": "Kovera AI Resilience Backend",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",

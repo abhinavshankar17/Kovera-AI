@@ -11,13 +11,13 @@ const LandingPage = () => {
       {/* Hero Section */}
       <div style={{ textAlign: 'center', marginBottom: '80px' }}>
         <h1 style={{ fontSize: '4rem', marginBottom: '20px' }}>
-          Income Protection for the 
+          Collective Resilience for the 
           <br/>
           <span className="text-gradient">Gig Economy</span>
         </h1>
         <p className="text-subtle" style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 40px auto' }}>
-          GigShield AI protects delivery riders from income loss caused by external disruptions 
-          like heavy rain, extreme heat, high pollution, and traffic gridlocks.
+          Kovera AI protects delivery partners through algorithmic risk assessment 
+          and community-driven hazard reporting. Resilience, powered by the collective.
         </p>
         <div>
           <button className="btn btn-primary" onClick={() => navigate('/auth')} style={{ marginRight: '16px', padding: '16px 32px', fontSize: '1.1rem' }}>Get Covered</button>

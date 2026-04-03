@@ -1,44 +1,38 @@
-# GigShield AI – AI-Powered Parametric Micro-Insurance
+# Kovera AI – The Community-Driven Resilience Layer
 
-**GigShield AI** is a cutting-edge InsurTech platform designed to provide financial resilience for gig economy workers (Swiggy, Zomato, Uber, etc.). By leveraging real-time environmental data and AI-driven risk assessment, the platform automatically detects income-threatening disruptions and triggers near-instant payouts—**no manual claims required.**
+**Kovera AI** is a next-generation resilience platform designed for the gig economy. Moving beyond traditional insurance, Kovera leverages real-time environmental data and **Community-Driven Proof (C-Proof)** to provide instant financial protection for delivery partners and gig workers.
 
 ---
 
-## 🚀 The Mission
-Traditional insurance is too slow and rigid for the gig economy. Gig workers lose daily income due to heavy rain, extreme heat, or traffic gridlock. **GigShield AI** fills this gap with a **parametric model**: if a predefined weather or traffic threshold is met, the "Shield" activates and the rider gets paid.
+## 🚀 The Mission: Resilience Through the Collective
+The gig economy is volatile. Extreme weather, traffic gridlock, and hyper-local hazards (like street-level flooding) can halt earnings instantly. **Kovera AI** fills this gap by combining algorithmic risk assessment with crowdsourced hazard reporting. When the collective reports a disruption, the "Resilience Trigger" activates.
 
 ---
 
 ## ✨ Key Features
 
-### 🛠️ Advanced Admin Command Center
-A professional-grade "Mission Control" for insurance providers:
-*   **Market Fleet Heatmap**: Real-time visualization of 100+ riders across Chennai using **Leaflet.js**, featuring live zone-density radar and high-risk ping tracking.
-*   **Dynamic Pricing Engine**: A real-time "Pricing Dial" allow admins to adjust city-wide risk multipliers based on incoming weather forecasts.
-*   **Manual Payout Overrides**: A streamlined "Claims & Overrides" queue for handling edge-case disputes or manual approvals.
-*   **Deep Fraud Investigation**: AI-driven "Audit Modals" that present anomaly logs (GPS spoofing, device mismatch) and allow for one-click account suspension.
-*   **System Health Monitor**: Live telemetry for external API dependencies (OpenWeatherMap, Google Maps, Payment Gateways).
+### 🛡️ Community Verification (C-Proof)
+Our "opinionated" differentiator. Instead of waiting for official weather stations to catch up, Kovera listens to its users.
+*   **Hyper-local Hazard Reporting**: Riders can report active waterlogging, accidents, or road closures.
+*   **Consensus-Based Triggers**: If multiple riders in a specific radius report the same disruption, an automatic layout is initialized for all covered partners in that zone.
 
-### 🛡️ Futuristic Rider Experience
-*   **Glassmorphism Dashboard**: A premium, high-performance UI showing active policy status, real-time risk scores, and payout history.
-*   **Automated Payouts**: Parametric triggers ensure that when "Moderate Rain" turns to "Severe Flood," the payout is initialized automatically.
-*   **Secure Onboarding**: A high-end Auth system featuring animated "Security Scan" effects and role-based access.
+### 🛠️ Kovera Command Center (Admin)
+*   **Live Resilience Heatmap**: Real-time visualization of rider density and active hazard clusters.
+*   **Adaptive Pricing Engine**: Dynamic adjustment of risk-multipliers based on live community and sensor telemetry.
+*   **Fraud-Guard AI**: Behavioral auditing to ensure community reports are genuine and not spoofed.
+
+### 📱 Pulse Dashboard (Rider)
+*   **Glassmorphism UI**: A premium, high-performance interface showing active coverage and real-time risk scores.
+*   **Rapid Hazard Report**: One-tap reporting to contribute to the community's safety net.
+*   **Automated Near-Instant Payouts**: Parametric triggers ensure payouts hit the wallet the moment thresholds are met.
 
 ---
 
 ## 💻 Tech Stack
 
-**Frontend:**
-*   **React 18** (Vite-powered)
-*   **Leaflet.js** (Reactive Mapping & Heatmaps)
-*   **Recharts** (Financial Trend Analysis)
-*   **Lucide / React-Icons** (Iconography)
-*   **Vanilla CSS** (Custom Glassmorphic Design System)
-
-**Backend:**
-*   **Node.js & Express.js**
-*   **MongoDB & Mongoose** (NoSQL Database)
-*   **JWT & Bcrypt** (Secure Role-Based Auth)
+**Frontend:** React 18, Leaflet.js, Recharts, Vanilla CSS (Glassmorphic Design).
+**Backend:** Node.js, Express, MongoDB, JWT Security.
+**AI Core:** Risk Engine for consensus-based validation and anomaly detection.
 
 ---
 
@@ -46,61 +40,24 @@ A professional-grade "Mission Control" for insurance providers:
 
 ```mermaid
 graph TD
-    A[External Environmental APIs] -->|Live Data| B[AI Risk Trigger Engine]
-    B -->|Calculate Payouts| C[Express.js / Node.js API]
-    C -->|Store Stats & Logs| D[MongoDB]
-    E[Admin Command Center] -->|Monitor & Adjust| C
-    F[Rider Mobile App] -->|View Coverage| C
-    C -->|Trigger| G[Automatic Payout Gateway]
+    A[Environmental APIs] -->|Sensor Data| B[Kovera Risk Engine]
+    C[Rider Community] -->|Hazard Reports| B
+    B -->|Consensus Validation| D[Express.js / Node.js API]
+    D -->|Store Logs| E[MongoDB]
+    F[Admin Center] -->|Manage Flows| D
+    G[Rider Dashboard] -->|Report Hazards| D
+    D -->|Trigger| H[Instant Payout Gateway]
 ```
 
 ---
 
-## 🛠️ Installation & Setup
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/abhinavshankar17/GigShield-AI.git
-cd GigShield-AI
-```
-
-### 2. Backend Setup
-```bash
-cd server
-npm install
-# Create a .env file with MONGO_URI and JWT_SECRET
-npm run dev
-```
-
-### 3. Seed the Database
-Populate the system with 100+ riders, active policies, and sample claims:
-```bash
-node src/seed.js
-```
-
-### 4. Frontend Setup
-```bash
-cd ../client
-npm install
-npm run dev
-```
+## 🛠️ AI Core & Fraud Detection
+Kovera uses a "Proof-of-Presence" model:
+*   **Spatial Consistency**: Reports are only valid if the rider's GPS confirms they are in the reported hazard zone.
+*   **Consensus Weighting**: Higher trust is given to riders with high "Reliability Scores."
+*   **Behavioral Auditing**: Detecting patterns that suggest coordinated false reporting.
 
 ---
 
-## 🛡️ AI Core & Fraud Detection
-GigShield doesn't just pay out; it protects the reserve pool using:
-*   **Behavioral Auditing**: Patterns that deviate from standard delivery routes flag high fraud scores.
-*   **GPS Variance Checking**: AI detects "GPS Jumps" or spoofed locations during active disruption events.
-*   **Risk Multipliers**: Premiums scale dynamically based on real-time disruption data, ensuring long-term financial sustainability.
-
----
-
-## 📈 Future Roadmap
-*   **L2 Integration**: Moving the claim settlements to a blockchain-based smart contract for 100% transparency.
-*   **Multi-City Expansion**: Expanding beyond Chennai to all tier-1 metro cities via automated zone-mapping.
-*   **Predictive Weather ML**: Training local models to forecast rain-flooding patterns 2 hours before they occur.
-
----
-
-*Building financial resilience for the workforce powering the digital economy.*
-**GigShield AI – The Shield That Never Sleeps.**
+*Powering the workforce through collective resilience.*
+**Kovera AI – Resilience, Powered by the Collective.**

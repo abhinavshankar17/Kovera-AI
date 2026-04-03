@@ -98,8 +98,8 @@ const AdminDashboard = () => {
       {/* Sidebar Navigation */}
       <div style={{ width: '280px', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border-light)', padding: '30px 20px', display: 'flex', flexDirection: 'column' }}>
         <div style={{ marginBottom: '40px', padding: '0 10px' }}>
-           <h2 className="text-gradient" style={{ margin: 0, fontSize: '1.5rem' }}>GigShield AI</h2>
-           <p className="text-subtle" style={{ fontSize: '0.8rem' }}>Admin Control Panel</p>
+           <h2 className="text-gradient" style={{ margin: 0, fontSize: '1.5rem' }}>Kovera AI</h2>
+           <p className="text-subtle" style={{ fontSize: '0.8rem' }}>Resilience Command Center</p>
         </div>
 
         <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -267,6 +267,11 @@ const AdminDashboard = () => {
                            <span className={`badge badge-${p.status === 'Approved' || p.status === 'Auto-Paid' ? 'success' : (p.status === 'Rejected' ? 'error' : 'info')}`}>
                               {p.status}
                            </span>
+                           {p.triggerEvent?.type?.startsWith('Community') && (
+                             <div style={{ fontSize: '0.65rem', color: 'var(--accent-mint)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                               <FiUsers size={10} /> C-Proof Verified
+                             </div>
+                           )}
                         </td>
                         <td style={{ padding: '16px 24px', textAlign: 'center' }}>
                           {p.status === 'Pending' || p.status === 'Under Review' ? (

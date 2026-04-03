@@ -7,12 +7,13 @@
   --border-color: rgba(60, 70, 100, 0.3);
   --border-light: rgba(255, 255, 255, 0.1);
   
-  /* Accents - Neon Blue, Cyber Purple, Alert Red */
-  --accent-blue: #00d2ff;
-  --accent-purple: #7a28ff;
-  --accent-gradient: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #1ce3ff 0%, #5d9bff 100%);
-  --premium-gradient: linear-gradient(135deg, #7a28ff 0%, #ff007a 100%);
+  /* Accents - Cyber Mint & Deep Indigo */
+  --accent-mint: #00ffcc;
+  --accent-indigo: #4f46e5;
+  --accent-blue: #00ffcc; /* Mapping for legacy blue */
+  --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #00ffcc 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #6366f1 0%, #34ffd9 100%);
+  --premium-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
   
   /* Status Colors */
   --status-success: #00e676;
@@ -46,8 +47,8 @@ body {
   overflow-x: hidden;
   /* Ambient background blobs */
   background-image: 
-    radial-gradient(circle at 15% 50%, rgba(122, 40, 255, 0.08), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(0, 210, 255, 0.08), transparent 25%);
+    radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.12), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(0, 255, 204, 0.1), transparent 25%);
   background-attachment: fixed;
 }
 

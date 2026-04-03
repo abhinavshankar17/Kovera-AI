@@ -44,7 +44,7 @@ const importData = async () => {
     const adminPassword = await bcrypt.hash('admin123', salt);
     await User.create({
         name: 'Super Admin',
-        email: 'admin@gigshield.ai',
+        email: 'admin@kovera.ai',
         password: adminPassword,
         role: 'admin'
     });

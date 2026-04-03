@@ -52,18 +52,18 @@ const AuthPage = () => {
           <div 
             className="scan-line" 
             style={{ 
-              background: role === 'admin' ? 'var(--accent-purple)' : 'var(--accent-blue)',
-              boxShadow: `0 0 15px ${role === 'admin' ? 'var(--accent-purple)' : 'var(--accent-blue)'}`
+              background: role === 'admin' ? 'var(--accent-indigo)' : 'var(--accent-mint)',
+              boxShadow: `0 0 15px ${role === 'admin' ? 'var(--accent-indigo)' : 'var(--accent-mint)'}`
             }} 
           />
           
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <div className="glow-on-hover" style={{ display: 'inline-flex', padding: '15px', background: 'rgba(0, 210, 255, 0.1)', borderRadius: '50%', marginBottom: '16px', border: '1px solid var(--accent-blue)' }}>
-              <FiShield size={32} color="var(--accent-blue)" />
+            <div className="glow-on-hover" style={{ display: 'inline-flex', padding: '15px', background: 'rgba(0, 255, 204, 0.1)', borderRadius: '50%', marginBottom: '16px', border: '1px solid var(--accent-mint)' }}>
+              <FiShield size={32} color="var(--accent-mint)" />
             </div>
-            <h1 className="text-gradient" style={{ fontSize: '2rem', marginBottom: '8px' }}>GigShield AI</h1>
+            <h1 className="text-gradient" style={{ fontSize: '2rem', marginBottom: '8px' }}>Kovera AI</h1>
             <p className="text-subtle">
-              {role === 'admin' ? 'Strategic Fleet Management' : 'AI-Powered Income Protection'}
+              {role === 'admin' ? 'Strategic Fleet Management' : 'AI-Powered Collective Resilience'}
             </p>
           </div>
 
@@ -146,9 +146,9 @@ const AuthPage = () => {
           </form>
 
           <p style={{ textAlign: 'center', marginTop: '32px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            {isLogin ? "New to the shield? " : "Already protected? "}
-            <span style={{ color: 'var(--accent-blue)', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setIsLogin(!isLogin)}>
-              {isLogin ? 'Get Started' : 'Log In'}
+            {isLogin ? "New to Kovera? " : "Already protected? "}
+            <span style={{ color: 'var(--accent-mint)', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setIsLogin(!isLogin)}>
+              {isLogin ? 'Join the Collective' : 'Log In'}
             </span>
           </p>
         </div>

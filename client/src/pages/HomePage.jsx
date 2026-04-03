@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import CommunityFeed from '../components/CommunityFeed';
-import { FiShield, FiMapPin, FiClock } from 'react-icons/fi';
+import { FiShield, FiMapPin, FiClock, FiAlertTriangle } from 'react-icons/fi';
+import HazardReporter from '../components/HazardReporter';
 import WeatherAlertBanner from '../components/WeatherAlertBanner';
 import { getBrowserLocation, getCityFromCoords } from '../services/locationService';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
@@ -52,7 +53,7 @@ const HomePage = () => {
     if (active && payload && payload.length) {
       return (
         <div className="glass-panel" style={{ padding: '10px', fontSize: '0.9rem', minWidth: '150px' }}>
-          <p style={{ fontWeight: 'bold', marginBottom: '8px', color: 'var(--accent-blue)' }}>{label}</p>
+          <p style={{ fontWeight: 'bold', marginBottom: '8px', color: 'var(--accent-mint)' }}>{label}</p>
           <p style={{ margin: 0, color: 'var(--text-main)' }}>Earnings: <span style={{ fontWeight: 'bold' }}>₹{payload[0].value}</span></p>
           <p style={{ margin: '4px 0 0 0', color: 'var(--status-success)' }}>Protected: <span style={{ fontWeight: 'bold' }}>+₹{payload[1].value}</span></p>
         </div>
@@ -154,6 +155,9 @@ const HomePage = () => {
           </div>
           <p className="text-premium" style={{ fontWeight: 'bold' }}>{protectionScore > 75 ? 'Strong Protection' : 'Moderate Protection'}</p>
         </div>
+
+        {/* Hazard Reporter (C-Proof) */}
+        <HazardReporter zone={user.primaryZone} userToken={user.token} />
 
         {/* Community Feed Widget */}
         <CommunityFeed zone={user.primaryZone} />

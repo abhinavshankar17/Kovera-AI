@@ -19,12 +19,12 @@ const SidebarLayout = () => {
       gap: '12px',
       padding: '16px 20px',
       borderRadius: '12px',
-      background: isActive ? 'rgba(0, 210, 255, 0.1)' : 'transparent',
-      color: isActive ? 'var(--accent-blue)' : 'var(--text-muted)',
-      borderLeft: isActive ? '4px solid var(--accent-blue)' : '4px solid transparent',
+      background: isActive ? 'rgba(0, 255, 204, 0.1)' : 'transparent',
+      color: isActive ? 'var(--accent-mint)' : 'var(--text-muted)',
+      borderLeft: isActive ? '4px solid var(--accent-mint)' : '4px solid transparent',
       transition: 'all 0.3s ease',
       fontWeight: isActive ? 'bold' : 'normal',
-      boxShadow: isActive ? 'inset 10px 0 20px rgba(0, 210, 255, 0.05)' : 'none',
+      boxShadow: isActive ? 'inset 10px 0 20px rgba(0, 255, 204, 0.05)' : 'none',
       marginBottom: '8px',
       textDecoration: 'none'
     };
@@ -50,7 +50,7 @@ const SidebarLayout = () => {
             <div style={{ background: 'var(--accent-gradient)', padding: '10px', borderRadius: '12px' }}>
                <FiShield size={24} color="white" />
             </div>
-            <h2 className="text-gradient" style={{ margin: 0 }}>GigShield AI</h2>
+            <h2 className="text-gradient" style={{ margin: 0 }}>Kovera AI</h2>
           </div>
         </div>
 

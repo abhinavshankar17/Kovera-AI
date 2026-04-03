@@ -16,7 +16,7 @@ connectDB();
 
 // Basic Route
 app.get('/', (req, res) => {
-  res.send('GigShield AI API is running...');
+  res.send('Kovera AI Resilience API is running...');
 });
 
 // Import Routes
@@ -24,6 +24,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/policy', require('./routes/policyRoutes'));
 app.use('/api/simulation', require('./routes/simulationRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/community', require('./routes/communityRoutes'));
 
 const PORT = process.env.PORT || 5000;
 
