@@ -34,7 +34,81 @@ Insurance payouts are parametric, meaning they are triggered by specific, measur
 
 The platform is built on the MERN stack with a focus on real-time data processing and modular architecture.
 
-### Frontend
+### System Data Flow
+
+The following diagram illustrates how Kovera AI processes multi-source data to trigger resilience payouts.
+
+```mermaid
+graph TD
+    subgraph Input_Layer [Data Input Sources]
+        A[External Environmental APIs]
+        B[Rider Community Reports]
+    end
+
+    subgraph Logic_Layer [Kovera Processing Engine]
+        C{Consensus Engine}
+        D[AI Fraud-Guard]
+        E[Spatial Verification]
+    end
+
+    subgraph Storage_Layer [Data & State Persistence]
+        F[(MongoDB Database)]
+        G[JWT Auth Provider]
+    end
+
+    subgraph Action_Layer [Resilience Actions]
+        H[Parametric Payout Gateway]
+        I[Live Fleet Update]
+    end
+
+    A -->|Telemetry Data| C
+    B -->|Hazard Reports| D
+    D -->|Verified Reports| E
+    E -->|Spatial Match| C
+    C -->|Threshold Met| H
+    C -->|Update State| F
+    H -->|Transaction Log| F
+    C -->|Broadcast Status| I
+    G -->|Secures| Logic_Layer
+```
+
+### Component Interaction
+
+This diagram represents the relationship between the various system components and user interfaces.
+
+```mermaid
+graph LR
+    subgraph Client_Side [Frontend React/Vite]
+        Rider[Rider Pulse Dashboard]
+        Admin[Admin Command Center]
+    end
+
+    subgraph Backend_Services [Node.js Express API]
+        Auth[Auth Middleware]
+        Comm[Community Service]
+        Sim[Simulation Engine]
+        Risk[Risk & Payout Service]
+    end
+
+    subgraph Database [MongoDB]
+        Users[(Users & Policies)]
+        Hazards[(Hazard Clusters)]
+        Payouts[(Payout Logs)]
+    end
+
+    Rider <--> Auth
+    Admin <--> Auth
+    
+    Auth --> Comm
+    Auth --> Sim
+    Auth --> Risk
+    
+    Comm <--> Hazards
+    Risk <--> Payouts
+    Auth <--> Users
+```
+
+### Frontend Architecture
 - **React 18**: Component-based UI with interactive state management.
 - **Leaflet.js**: High-performance mapping for the live heatmap.
 - **Recharts**: Data visualization for rider earnings and system-wide analytics.
